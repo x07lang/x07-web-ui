@@ -1,6 +1,6 @@
 package x07:web-ui@0.1.0;
 
-interface ui {
+world app {
   /// Canonical JSON (UTF-8) by convention.
   type json-bytes = list<u8>;
 
@@ -20,10 +20,7 @@ interface ui {
     patch: json-bytes,
   }
 
-  init: func(req: init-req) -> init-res;
-  event: func(req: event-req) -> event-res;
+  export init: func(req: init-req) -> init-res;
+  export event: func(req: event-req) -> event-res;
 }
 
-world app {
-  export ui;
-}
