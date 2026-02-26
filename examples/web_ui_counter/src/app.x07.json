@@ -1,7 +1,7 @@
 {
   "schema_version": "x07.x07ast@0.3.0",
   "kind": "module",
-  "module_id": "web_ui_counter.app",
+  "module_id": "app",
   "imports": [
     "std.fmt",
     "std.parse",
@@ -12,11 +12,11 @@
   "decls": [
     {
       "kind": "export",
-      "names": ["web_ui_counter.app.step_v1"]
+      "names": ["app.step_v1"]
     },
     {
       "kind": "defn",
-      "name": "web_ui_counter.app.step_v1",
+      "name": "app.step_v1",
       "params": [{ "name": "dispatch_json", "ty": "bytes_view" }],
       "result": "bytes",
       "body": [
@@ -70,18 +70,19 @@
         ["let", "count", ["if", ["<", "count0", 0], 0, "count0"]],
         ["let", "count_next", ["if", ["view.eq", ["bytes.view", "event_type"], ["bytes.view", "click_type"]], ["+", "count", 1], "count"]],
 
-        ["let", "count_dec", ["std.fmt.s32_to_dec", "count_next"]],
+        ["let", "count_dec_state", ["std.fmt.s32_to_dec", "count_next"]],
+        ["let", "count_dec_text", ["std.fmt.s32_to_dec", "count_next"]],
         [
           "let",
           "state_json",
           [
             "bytes.concat",
-            ["bytes.concat", ["bytes.lit", "{\"count\":"], "count_dec"],
+            ["bytes.concat", ["bytes.lit", "{\"count\":"], "count_dec_state"],
             ["bytes.lit", "}"]
           ]
         ],
 
-        ["let", "text_json", ["bytes.concat", ["bytes.concat", ["bytes.lit", "\"Count: "], "count_dec"], ["bytes.lit", "\""]]],
+        ["let", "text_json", ["bytes.concat", ["bytes.concat", ["bytes.lit", "\"Count: "], "count_dec_text"], ["bytes.lit", "\""]]],
 
         ["let", "key_t1", ["bytes.lit", "\"t1\""]],
         ["let", "node_t1", ["std.web_ui.vdom.text_v1", ["bytes.view", "key_t1"], ["bytes.view", "text_json"]]],

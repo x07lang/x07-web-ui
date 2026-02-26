@@ -1,7 +1,7 @@
 {
   "schema_version": "x07.x07ast@0.3.0",
   "kind": "module",
-  "module_id": "web_ui_form.app",
+  "module_id": "app",
   "imports": [
     "std.web_ui.runtime",
     "std.web_ui.vdom",
@@ -10,11 +10,11 @@
   "decls": [
     {
       "kind": "export",
-      "names": ["web_ui_form.app.step_v1"]
+      "names": ["app.step_v1"]
     },
     {
       "kind": "defn",
-      "name": "web_ui_form.app.step_v1",
+      "name": "app.step_v1",
       "params": [{ "name": "dispatch_json", "ty": "bytes_view" }],
       "result": "bytes",
       "body": [
@@ -116,6 +116,8 @@
             "text_json"
           ]
         ],
+        ["let", "text_next_state", ["view.to_bytes", ["bytes.view", "text_next"]]],
+        ["let", "text_next_attrs", ["view.to_bytes", ["bytes.view", "text_next"]]],
 
         [
           "let",
@@ -138,7 +140,7 @@
               [
                 "bytes.concat",
                 ["bytes.lit", "{\"text\":"],
-                "text_next"
+                "text_next_state"
               ],
               ["bytes.lit", ",\"submitted\":"]
             ],
@@ -176,7 +178,7 @@
 
         ["let", "key_in", ["bytes.lit", "\"in_text\""]],
         ["let", "attrs_pre", ["bytes.lit", "{\"type\":\"text\",\"value\":"]],
-        ["let", "attrs_mid", ["bytes.concat", "attrs_pre", "text_next"]],
+        ["let", "attrs_mid", ["bytes.concat", "attrs_pre", "text_next_attrs"]],
         ["let", "in_attrs", ["bytes.concat", "attrs_mid", ["bytes.lit", "}"]]],
         ["let", "in_class", ["bytes.lit", "[]"]],
         ["let", "in_style", ["bytes.lit", "{}"]],
@@ -284,7 +286,7 @@
         ],
 
         ["let", "ui_tree", ["std.web_ui.vdom.tree_v1", ["bytes.view", "root_node"]]],
-        ["let", "patches", ["std.web_ui.patch.empty_v1"]],
+        ["let", "patches", ["std.web_ui.patch.replace_root_v1", ["bytes.view", "ui_tree"]]],
         ["let", "effects", ["bytes.lit", "[]"]],
         ["let", "telemetry", ["bytes.lit", "{}"]],
         [
@@ -299,4 +301,3 @@
     }
   ]
 }
-

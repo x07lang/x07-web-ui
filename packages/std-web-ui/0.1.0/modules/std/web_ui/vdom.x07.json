@@ -219,19 +219,16 @@
               "bytes.concat",
               [
                 "bytes.concat",
-                [
-                  "bytes.concat",
-                  ["bytes.concat", ["bytes.lit", "["], ["view.to_bytes", "a"]],
-                  ["bytes.lit", ","]
-                ],
-                ["view.to_bytes", "b"]
+                ["bytes.concat", ["bytes.lit", "["], ["view.to_bytes", "a"]],
+                ["bytes.lit", ","]
               ],
-              ["bytes.lit", ","]
+              ["view.to_bytes", "b"]
             ],
-            ["view.to_bytes", "c"]
+            ["bytes.lit", ","]
           ],
-          ["bytes.lit", "]"]
-        ]
+          ["view.to_bytes", "c"]
+        ],
+        ["bytes.lit", "]"]
       ]
     },
     {
