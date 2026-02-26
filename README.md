@@ -12,7 +12,7 @@ Phase 2 adds:
 
 The canonical browser host lives in `host/` (not a registry package artifact).
 
-The canonical X07 package exporting `std.web_ui.*` lives in `packages/std-web-ui/0.1.0/`.
+The canonical X07 package exporting `std.web_ui.*` lives in `packages/std-web-ui/0.1.1/`.
 
 Examples:
 
