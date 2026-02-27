@@ -55,3 +55,12 @@ The host also supports a minimal browser-side effect surface and injects results
 - Storage: `x07.web_ui.effect.storage.*` → `state.__x07_storage`
 - Navigation: `x07.web_ui.effect.nav.*` → `state.__x07_nav`
 - Timers: `x07.web_ui.effect.timer.*` → `state.__x07_timer`
+
+## Phase 6 extension: capabilities + policy snapshot
+
+When mounted with `capabilities` (x07.app.capabilities@0.1.0 shape), the host:
+
+- always allows same-origin HTTP requests (keeps relative `/api/...` working)
+- denies cross-origin `http(s)` fetch unless it matches `capabilities.network.allowlist[]`
+
+When mounted with `policySnapshotSha256`, the host includes it in the captured trace/incident metadata.
