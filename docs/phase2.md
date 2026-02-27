@@ -2,7 +2,7 @@
 
 This repo is the canonical home for:
 
-- `std.web_ui.*` X07 modules (package: `std-web-ui@0.1.2`)
+- `std.web_ui.*` X07 modules (package: `std-web-ui@0.1.3`)
 - `x07:web-ui` WIT packages
 - the canonical browser host (JS)
 
@@ -28,7 +28,7 @@ The browser runs the transpiled ESM output produced by `jco transpile`.
 
 ## Layout
 
-- `packages/std-web-ui/0.1.2/`: canonical `std.web_ui.*` package
+- `packages/std-web-ui/0.1.3/`: canonical `std.web_ui.*` package
 - `wit/`: canonical WIT packages
 - `host/`: canonical browser host (ESM + HTML)
 - `examples/`: small solve-pure apps that emit `x07.web_ui.*` frames
@@ -47,3 +47,11 @@ When mounted with an API prefix, the host also:
 - executes `x07.web_ui.effect.http.request` effects via `fetch`
 - injects responses under `state.__x07_http.response`
 - captures an `x07.app.trace@0.1.0` with combined UI + HTTP exchanges
+
+## Phase 5 extension: browser effects
+
+The host also supports a minimal browser-side effect surface and injects results under reserved state keys:
+
+- Storage: `x07.web_ui.effect.storage.*` → `state.__x07_storage`
+- Navigation: `x07.web_ui.effect.nav.*` → `state.__x07_nav`
+- Timers: `x07.web_ui.effect.timer.*` → `state.__x07_timer`

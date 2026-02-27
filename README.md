@@ -12,12 +12,18 @@ Phase 2 adds:
 
 The canonical browser host lives in `host/` (not a registry package artifact).
 
-The canonical X07 package exporting `std.web_ui.*` lives in `packages/std-web-ui/0.1.2/`.
+The canonical X07 package exporting `std.web_ui.*` lives in `packages/std-web-ui/0.1.3/`.
 
 Phase 3 adds a minimal HTTP effect contract:
 
 - `std.web_ui.effects.http` emits `x07.web_ui.effect.http.request` effects.
 - The host can execute these effects (against an API prefix) and capture `x07.app.trace@0.1.0`.
+
+Phase 5 expands the effect surface:
+
+- `std.web_ui.effects.storage` emits `x07.web_ui.effect.storage.*` effects.
+- `std.web_ui.effects.nav` emits `x07.web_ui.effect.nav.*` effects.
+- `std.web_ui.effects.timer` emits `x07.web_ui.effect.timer.*` effects.
 
 Examples:
 
