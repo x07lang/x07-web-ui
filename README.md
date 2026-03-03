@@ -1,31 +1,51 @@
 # x07-web-ui
 
-This repo tracks web-ui contracts and canonical assets for running an x07 UI reducer as a pure state machine.
+Canonical [X07](https://github.com/x07lang/x07) web UI contracts, stdlib packages, and browser host for running x07 UI reducers as pure state machines.
 
-The WIT packages live in `wit/`:
+x07-web-ui is designed for **100% agentic coding** — an AI coding agent scaffolds, implements, tests, and ships a web UI app entirely on its own using structured contracts, deterministic replay, and machine-readable outputs. No human needs to write X07 by hand.
 
-- `x07:web-ui@0.1.0`: JSON-bytes boundary (`UTF-8`) with `init` and `event`.
+## Prerequisites
 
-Phase 2 adds:
+The [X07 toolchain](https://github.com/x07lang/x07) must be installed before using x07-web-ui. If you (or your agent) are new to X07, start with the **[Agent Quickstart](https://x07lang.org/docs/getting-started/agent-quickstart)** — it covers toolchain setup, project structure, and the workflow conventions an agent needs to be productive.
 
-- `x07:web-ui@0.2.0`: JSON-bytes boundary (`UTF-8`) with `init` and `step` using dispatch/frame envelopes.
+## What it includes
 
-The canonical browser host lives in `host/` (not a registry package artifact).
+| Surface | Description |
+|---------|-------------|
+| **WIT contracts** (`wit/`) | `x07:web-ui@0.1.0` (Phase 0) and `x07:web-ui@0.2.0` (Phase 2) — JSON-bytes boundary with `init`/`step` dispatch/frame envelopes |
+| **Stdlib package** (`packages/std-web-ui/0.1.3/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry) |
+| **Browser host** (`host/`) | Canonical host (`index.html`, `app-host.mjs`) — loads wasm, normalizes DOM events, calls `init`/`step`, applies patches, captures transcripts |
+| **Examples** | `web_ui_counter`, `web_ui_form` with deterministic trace fixtures |
 
-The canonical X07 package exporting `std.web_ui.*` lives in `packages/std-web-ui/0.1.3/`.
+## Effects
 
-Phase 3 adds a minimal HTTP effect contract:
+The UI reducer is a pure state machine (`init` + `step`). Side effects are expressed as data and executed by the host:
 
-- `std.web_ui.effects.http` emits `x07.web_ui.effect.http.request` effects.
-- The host can execute these effects (against an API prefix) and capture `x07.app.trace@0.1.0`.
+- **HTTP** (`std.web_ui.effects.http`): emits `x07.web_ui.effect.http.request` effects; host executes against an API prefix and captures `x07.app.trace@0.1.0`
+- **Storage** (`std.web_ui.effects.storage`): local key-value storage effects
+- **Navigation** (`std.web_ui.effects.nav`): navigation effects
+- **Timer** (`std.web_ui.effects.timer`): timer/delay effects
 
-Phase 5 expands the effect surface:
+## Architecture
 
-- `std.web_ui.effects.storage` emits `x07.web_ui.effect.storage.*` effects.
-- `std.web_ui.effects.nav` emits `x07.web_ui.effect.nav.*` effects.
-- `std.web_ui.effects.timer` emits `x07.web_ui.effect.timer.*` effects.
+The same `std.web_ui.*` reducer compiled to WASM runs everywhere:
 
-Examples:
+- **Browser**: loaded directly by the canonical browser host
+- **Desktop/mobile**: loaded inside a system WebView shell (`x07-device-host`) — same wasm artifact, same host contract
+- **CI**: headless deterministic replay (transcript → assertions) via `x07-wasm web-ui test`
+
+## Examples
 
 - `examples/web_ui_counter/`
 - `examples/web_ui_form/`
+
+## Links
+
+- [X07 Agent Quickstart](https://x07lang.org/docs/getting-started/agent-quickstart) — start here
+- [X07 toolchain](https://github.com/x07lang/x07)
+- [X07 website](https://x07lang.org)
+- [WASM build tooling](https://github.com/x07lang/x07-wasm-backend) — `x07-wasm web-ui build/test/serve`
+
+## License
+
+Dual-licensed under [Apache 2.0](LICENSE-APACHE) and [MIT](LICENSE).
