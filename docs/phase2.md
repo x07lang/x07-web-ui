@@ -37,8 +37,11 @@ The browser runs the transpiled ESM output produced by `jco transpile`.
 
 The browser host entry is `host/index.html`:
 
+- entrypoint is `host/bootstrap.js` (loaded by `host/index.html`)
 - prefers `./transpiled/app.mjs` when present (component+ESM build)
 - otherwise falls back to `./app.wasm` (core wasm build)
+
+For backwards compatibility, `host/main.mjs` exists as a thin alias that loads `bootstrap.js`.
 
 ## Phase 3 extension: HTTP effects
 
