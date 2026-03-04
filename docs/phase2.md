@@ -2,7 +2,7 @@
 
 This repo is the canonical home for:
 
-- `std.web_ui.*` X07 modules (package: `std-web-ui@0.1.3`)
+- `std.web_ui.*` X07 modules (package: `std-web-ui@0.1.4`)
 - `x07:web-ui` WIT packages
 - the canonical browser host (JS)
 
@@ -13,7 +13,7 @@ This repo is the canonical home for:
 The browser host loads a core wasm module exporting `x07_solve_v2` and drives it with JSON bytes:
 
 - input: `x07.web_ui.dispatch@0.1.0` (`UTF-8` JSON bytes)
-- output: `x07.web_ui.frame@0.1.0` (`UTF-8` JSON bytes)
+- output: `x07.web_ui.frame@0.2.0` (`UTF-8` JSON bytes)
 
 The host maintains `state` outside the wasm module and replays deterministically using captured traces.
 
@@ -28,7 +28,7 @@ The browser runs the transpiled ESM output produced by `jco transpile`.
 
 ## Layout
 
-- `packages/std-web-ui/0.1.3/`: canonical `std.web_ui.*` package
+- `packages/std-web-ui/0.1.4/`: canonical `std.web_ui.*` package
 - `wit/`: canonical WIT packages
 - `host/`: canonical browser host (ESM + HTML)
 - `examples/`: small solve-pure apps that emit `x07.web_ui.*` frames

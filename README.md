@@ -13,7 +13,7 @@ The [X07 toolchain](https://github.com/x07lang/x07) must be installed before usi
 | Surface | Description |
 |---------|-------------|
 | **WIT contracts** (`wit/`) | `x07:web-ui@0.1.0` (Phase 0) and `x07:web-ui@0.2.0` (Phase 2) — JSON-bytes boundary with `init`/`step` dispatch/frame envelopes |
-| **Stdlib package** (`packages/std-web-ui/0.1.3/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry) |
+| **Stdlib package** (`packages/std-web-ui/0.1.4/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry) |
 | **Browser host** (`host/`) | Canonical host (`index.html`, `app-host.mjs`) — loads wasm, normalizes DOM events, calls `init`/`step`, applies patches, captures transcripts |
 | **Examples** | `web_ui_counter`, `web_ui_form` with deterministic trace fixtures |
 
