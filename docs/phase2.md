@@ -78,9 +78,14 @@ The host also supports a minimal browser-side effect surface and injects results
 
 ## Phase 6 extension: capabilities + policy snapshot
 
-When mounted with `capabilities` (x07.app.capabilities@0.1.0 shape), the host:
+When mounted with `capabilities` (x07.app.capabilities@0.2.0 shape), the host:
 
 - always allows same-origin HTTP requests (keeps relative `/api/...` working)
 - denies cross-origin `http(s)` fetch unless it matches `capabilities.network.allowlist[]`
 
 When mounted with `policySnapshotSha256`, the host includes it in the captured trace/incident metadata.
+
+## Defense in depth
+
+- CSP-from-capabilities: deployments can derive a CSP `connect-src` allowlist from `capabilities.network.allowlist[]` (plus `'self'`) so the browser blocks disallowed egress even if JS is compromised.
+- WASI is not a sandbox: if you run WASI code outside `x07-wasm` (for example via Node), do not assume the runtime is a security sandbox for untrusted code.
