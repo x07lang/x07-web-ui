@@ -33,6 +33,23 @@ The browser runs the transpiled ESM output produced by `jco transpile`.
 - `host/`: canonical browser host (ESM + HTML)
 - `examples/`: small solve-pure apps that emit `x07.web_ui.*` frames
 
+## Host snapshot (drift gate)
+
+The canonical browser host assets are pinned by a snapshot contract:
+
+- `host/host.snapshot.json`
+
+CI validates:
+
+- asset `sha256` + `bytes_len`
+- computed `host_abi_hash` over `{abi_name, abi_version, bridge_protocol_version, assets[].{path,sha256}}`
+
+Run locally:
+
+```sh
+bash scripts/ci/check_host_snapshot.sh
+```
+
 ## Host usage
 
 The browser host entry is `host/index.html`:

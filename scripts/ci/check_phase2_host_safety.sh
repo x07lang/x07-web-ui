@@ -8,6 +8,8 @@ if ! command -v node >/dev/null 2>&1; then
   exit 1
 fi
 
+bash scripts/ci/check_host_snapshot.sh
+
 INDEX_HTML="${ROOT_DIR}/host/index.html"
 
 grep -q "Content-Security-Policy" "${INDEX_HTML}"
@@ -21,4 +23,3 @@ fi
 node --test "${ROOT_DIR}/host/tests/sanitize.test.mjs"
 
 echo "phase2_host_safety: PASS"
-
