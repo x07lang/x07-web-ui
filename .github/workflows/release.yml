@@ -1,0 +1,221 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions: {}
+
+jobs:
+  verify_tag:
+    name: verify-tag
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: x07lang/x07
+          path: .release-tools
+      - name: Verify tag matches package/host version
+        shell: bash
+        run: |
+          bash .release-tools/scripts/release/verify-tag.sh --repo-kind x07-web-ui --tag "${GITHUB_REF_NAME}"
+
+  test:
+    name: test
+    needs: verify_tag
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run host safety + snapshot checks
+        shell: bash
+        run: |
+          bash scripts/ci/check_phase2_host_safety.sh
+
+  publish_x07_package:
+    name: publish-std-web-ui-package
+    needs: test
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: x07lang/x07
+          path: .release-tools
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+      - name: Build x07 publish tool
+        shell: bash
+        run: |
+          cargo build --locked --release -p x07 --manifest-path .release-tools/Cargo.toml
+      - name: Publish std-web-ui package to x07 registry
+        env:
+          X07_REGISTRY_TOKEN: ${{ secrets.X07_REGISTRY_TOKEN }}
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          bash .release-tools/scripts/release/publish-x07-package.sh \
+            --package std-web-ui \
+            --version "${VERSION}" \
+            --packages-dir "${GITHUB_WORKSPACE}/packages" \
+            --x07-bin "${GITHUB_WORKSPACE}/.release-tools/target/release/x07"
+
+  bundle_host_assets:
+    name: bundle-host-assets
+    needs: test
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package host bundle
+        id: pack
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          ASSET_PATH="$(bash scripts/release/package-web-ui-host-bundle.sh \
+            --version "${VERSION}" \
+            --out-dir dist/release)"
+          echo "asset_path=${ASSET_PATH}" >> "$GITHUB_OUTPUT"
+          echo "asset_name=$(basename "${ASSET_PATH}")" >> "$GITHUB_OUTPUT"
+      - name: Attest host bundle
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: ${{ steps.pack.outputs.asset_path }}
+      - name: Upload host bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.pack.outputs.asset_name }}
+          path: ${{ steps.pack.outputs.asset_path }}
+          if-no-files-found: error
+          retention-days: 7
+
+  finalize_release:
+    name: finalize-release
+    needs:
+      - publish_x07_package
+      - bundle_host_assets
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      attestations: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: x07lang/x07
+          path: .release-tools
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Download host bundle
+        uses: actions/download-artifact@v4
+        with:
+          path: dist/release
+          merge-multiple: true
+      - name: Compute release metadata
+        id: meta
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          HOST_ABI_HASH="$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          doc = json.loads(Path('host/host.snapshot.json').read_text(encoding='utf-8'))
+          print(doc['host_abi_hash'])
+          PY
+          )"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "host_abi_hash=${HOST_ABI_HASH}" >> "$GITHUB_OUTPUT"
+          echo "checksums=dist/release/x07-web-ui-host-${VERSION}-checksums.txt" >> "$GITHUB_OUTPUT"
+          echo "component_manifest=dist/release/x07-web-ui-host-${VERSION}-release.json" >> "$GITHUB_OUTPUT"
+          echo "attestations_jsonl=dist/release/x07-web-ui-host-${VERSION}-attestations.jsonl" >> "$GITHUB_OUTPUT"
+      - name: Export attestations bundle
+        shell: bash
+        run: |
+          bash .release-tools/scripts/release/export-attestations-jsonl.sh \
+            --in-dir dist/release \
+            --out "${{ steps.meta.outputs.attestations_jsonl }}"
+      - name: Generate checksums
+        shell: bash
+        run: |
+          python3 .release-tools/scripts/release/gen-checksums.py \
+            --in-dir dist/release \
+            --out "${{ steps.meta.outputs.checksums }}"
+      - name: Generate component release manifest
+        shell: bash
+        run: |
+          python3 .release-tools/scripts/release/gen-component-release.py \
+            --schema x07.component.release@0.1.0 \
+            --component x07_web_ui_host \
+            --version "${{ steps.meta.outputs.version }}" \
+            --tag "${GITHUB_REF_NAME}" \
+            --repo "https://github.com/${GITHUB_REPOSITORY}" \
+            --assets-dir dist/release \
+            --compat-file "releases/compat/${{ steps.meta.outputs.version }}.json" \
+            --metadata "host_abi_hash=sha256:${{ steps.meta.outputs.host_abi_hash }}" \
+            --metadata "package_name=std-web-ui" \
+            --metadata "package_version=${{ steps.meta.outputs.version }}" \
+            --out "${{ steps.meta.outputs.component_manifest }}"
+      - name: Validate component release manifest
+        shell: bash
+        run: |
+          python3 .release-tools/scripts/release/validate-json.py \
+            --schema x07.component.release@0.1.0 \
+            --in "${{ steps.meta.outputs.component_manifest }}" \
+            --require component \
+            --require version \
+            --require assets \
+            --require compatibility
+      - name: Attest manifest assets
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            ${{ steps.meta.outputs.attestations_jsonl }}
+            ${{ steps.meta.outputs.checksums }}
+            ${{ steps.meta.outputs.component_manifest }}
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if ! gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            gh release create "${GITHUB_REF_NAME}" \
+              --repo "${GITHUB_REPOSITORY}" \
+              --draft \
+              --verify-tag \
+              --title "${GITHUB_REF_NAME}"
+          fi
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release upload "${GITHUB_REF_NAME}" dist/release/* \
+            --repo "${GITHUB_REPOSITORY}" \
+            --clobber
+      - name: Publish immutable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release edit "${GITHUB_REF_NAME}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --draft=false
