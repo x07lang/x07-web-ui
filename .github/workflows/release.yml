@@ -39,7 +39,7 @@ jobs:
       - name: Run host safety + snapshot checks
         shell: bash
         run: |
-          bash scripts/ci/check_phase2_host_safety.sh
+          bash scripts/ci/check_release_ready.sh
 
   publish_x07_package:
     name: publish-std-web-ui-package
