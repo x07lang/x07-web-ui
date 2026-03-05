@@ -66,6 +66,10 @@ jobs:
           X07_REGISTRY_TOKEN: ${{ secrets.X07_REGISTRY_TOKEN }}
         shell: bash
         run: |
+          if [[ -z "${X07_REGISTRY_TOKEN:-}" ]]; then
+            echo "X07_REGISTRY_TOKEN is not configured; skipping registry publish in GitHub Actions."
+            exit 0
+          fi
           VERSION="${GITHUB_REF_NAME#v}"
           bash .release-tools/scripts/release/publish-x07-package.sh \
             --package std-web-ui \
