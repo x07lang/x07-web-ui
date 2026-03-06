@@ -4,8 +4,22 @@ on:
   push:
     tags:
       - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to publish
+        required: true
+        type: string
+
+concurrency:
+  group: x07-web-ui-release-${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }}
+  cancel-in-progress: true
 
 permissions: {}
+
+env:
+  RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }}
+  X07_TOOLS_TAG: v0.1.60
 
 jobs:
   verify_tag:
@@ -15,6 +29,8 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
       - uses: actions/checkout@v4
         with:
           repository: x07lang/x07
@@ -22,7 +38,7 @@ jobs:
       - name: Verify tag matches package/host version
         shell: bash
         run: |
-          bash .release-tools/scripts/release/verify-tag.sh --repo-kind x07-web-ui --tag "${GITHUB_REF_NAME}"
+          bash .release-tools/scripts/release/verify-tag.sh --repo-kind x07-web-ui --tag "${RELEASE_TAG}"
 
   test:
     name: test
@@ -32,10 +48,25 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - name: Install x07 tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          for bin in x07 x07c; do
+            cargo install --locked --git https://github.com/x07lang/x07.git --tag "${X07_TOOLS_TAG}" "${bin}"
+          done
+          x07 --version
+          x07c --help >/dev/null
       - name: Run host safety + snapshot checks
         shell: bash
         run: |
@@ -70,7 +101,7 @@ jobs:
             echo "X07_REGISTRY_TOKEN is not configured; skipping registry publish in GitHub Actions."
             exit 0
           fi
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${RELEASE_TAG#v}"
           bash .release-tools/scripts/release/publish-x07-package.sh \
             --package std-web-ui \
             --version "${VERSION}" \
@@ -87,11 +118,13 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
       - name: Package host bundle
         id: pack
         shell: bash
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${RELEASE_TAG#v}"
           ASSET_PATH="$(bash scripts/release/package-web-ui-host-bundle.sh \
             --version "${VERSION}" \
             --out-dir dist/release)"
@@ -122,6 +155,8 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
       - uses: actions/checkout@v4
         with:
           repository: x07lang/x07
@@ -139,7 +174,7 @@ jobs:
         id: meta
         shell: bash
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${RELEASE_TAG#v}"
           HOST_ABI_HASH="$(python3 - <<'PY'
           import json
           from pathlib import Path
@@ -171,7 +206,7 @@ jobs:
             --schema x07.component.release@0.1.0 \
             --component x07_web_ui_host \
             --version "${{ steps.meta.outputs.version }}" \
-            --tag "${GITHUB_REF_NAME}" \
+            --tag "${RELEASE_TAG}" \
             --repo "https://github.com/${GITHUB_REPOSITORY}" \
             --assets-dir dist/release \
             --compat-file "releases/compat/${{ steps.meta.outputs.version }}.json" \
@@ -202,19 +237,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          if ! gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
-            gh release create "${GITHUB_REF_NAME}" \
+          if ! gh release view "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            gh release create "${RELEASE_TAG}" \
               --repo "${GITHUB_REPOSITORY}" \
               --draft \
               --verify-tag \
-              --title "${GITHUB_REF_NAME}"
+              --title "${RELEASE_TAG}"
           fi
       - name: Upload release assets
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          gh release upload "${GITHUB_REF_NAME}" dist/release/* \
+          gh release upload "${RELEASE_TAG}" dist/release/* \
             --repo "${GITHUB_REPOSITORY}" \
             --clobber
       - name: Publish immutable release
@@ -222,6 +257,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          gh release edit "${GITHUB_REF_NAME}" \
+          gh release edit "${RELEASE_TAG}" \
             --repo "${GITHUB_REPOSITORY}" \
             --draft=false
