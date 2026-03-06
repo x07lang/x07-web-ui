@@ -50,6 +50,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.RELEASE_TAG }}
+      - uses: actions/checkout@v4
+        with:
+          repository: x07lang/x07
+          path: .release-tools
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
       - name: Rust cache
@@ -67,6 +71,11 @@ jobs:
           done
           x07 --version
           x07c --help >/dev/null
+      - name: Link stdlib lockfiles
+        shell: bash
+        run: |
+          ln -sf .release-tools/stdlib.lock stdlib.lock
+          ln -sf .release-tools/stdlib.os.lock stdlib.os.lock
       - name: Run host safety + snapshot checks
         shell: bash
         run: |
