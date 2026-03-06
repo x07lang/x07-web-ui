@@ -2,7 +2,7 @@
 
 This repo is the canonical home for:
 
-- `std.web_ui.*` X07 modules (package: `std-web-ui@0.1.7`)
+- `std.web_ui.*` X07 modules (package: `std-web-ui@0.1.8`)
 - `x07:web-ui` WIT packages
 - the canonical browser host (JS)
 
@@ -28,7 +28,7 @@ The browser runs the transpiled ESM output produced by `jco transpile`.
 
 ## Layout
 
-- `packages/std-web-ui/0.1.7/`: canonical `std.web_ui.*` package
+- `packages/std-web-ui/0.1.8/`: canonical `std.web_ui.*` package
 - `wit/`: canonical WIT packages
 - `host/`: canonical browser host (ESM + HTML)
 - `examples/`: small solve-pure apps that emit `x07.web_ui.*` frames
