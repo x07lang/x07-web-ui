@@ -20,6 +20,6 @@ if grep -q "<script type=\\\"module\\\">" "${INDEX_HTML}"; then
   exit 1
 fi
 
-node --test "${ROOT_DIR}/host/tests/sanitize.test.mjs"
+node --test "${ROOT_DIR}"/host/tests/*.test.mjs
 
 echo "phase2_host_safety: PASS"
