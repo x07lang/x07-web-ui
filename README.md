@@ -13,7 +13,7 @@ The [X07 toolchain](https://github.com/x07lang/x07) must be installed before usi
 | Surface | Description |
 |---------|-------------|
 | **WIT contracts** (`wit/`) | `x07:web-ui@0.1.0` (Phase 0) and `x07:web-ui@0.2.0` (Phase 2) — JSON-bytes boundary with `init`/`step` dispatch/frame envelopes |
-| **Stdlib package** (`packages/std-web-ui/0.1.9/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry) |
+| **Stdlib package** (`packages/std-web-ui/0.2.0/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry, M0 device helpers) |
 | **Browser host** (`host/`) | Canonical host (`index.html`, `app-host.mjs`) — loads wasm, normalizes DOM events, calls `init`/`step`, applies patches, captures transcripts |
 | **Examples** | `web_ui_counter`, `web_ui_form` with deterministic trace fixtures |
 
@@ -25,6 +25,11 @@ The UI reducer is a pure state machine (`init` + `step`). Side effects are expre
 - **Storage** (`std.web_ui.effects.storage`): local key-value storage effects
 - **Navigation** (`std.web_ui.effects.nav`): navigation effects
 - **Timer** (`std.web_ui.effects.timer`): timer/delay effects
+- **Device permissions** (`std.web_ui.effects.device.permissions`): capability-aware runtime permission query/request helpers
+- **Device capture/import** (`std.web_ui.effects.device.camera`, `std.web_ui.effects.device.files`): camera/photo capture and file import helpers that return blob manifests
+- **Device blobs** (`std.web_ui.effects.device.blobs`): blob metadata helpers for host-owned binary storage
+- **Device location** (`std.web_ui.effects.device.location`): one-shot foreground location helpers
+- **Device notifications/events** (`std.web_ui.effects.device.notifications`, `std.web_ui.effects.device.events`): local notification helpers plus lifecycle/connectivity event predicates
 
 ## Architecture
 
@@ -38,13 +43,16 @@ The same `std.web_ui.*` reducer compiled to WASM runs everywhere:
 
 - `examples/web_ui_counter/`
 - `examples/web_ui_form/`
+- Docs:
+  - `docs/device-capabilities-and-permissions.md`
+  - `docs/device-blob-manifests.md`
 
 ## Links
 
 - Recommended install flow:
   - `x07up component add wasm`
-  - `x07 pkg add std-web-ui@0.1.9 --sync`
-- Package publish line: `std-web-ui@0.1.9`
+  - `x07 pkg add std-web-ui@0.2.0 --sync`
+- Package publish line: `std-web-ui@0.2.0`
 - [X07 Agent Quickstart](https://x07lang.org/docs/getting-started/agent-quickstart) — start here
 - [X07 toolchain](https://github.com/x07lang/x07)
 - [X07 website](https://x07lang.org)
