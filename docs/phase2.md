@@ -55,6 +55,7 @@ bash scripts/ci/check_host_snapshot.sh
 The browser host entry is `host/index.html`:
 
 - entrypoint is `host/bootstrap.js` (loaded by `host/index.html`)
+- reads `./app.manifest.json` when present for `apiPrefix`, `componentEsmUrl`, and `webUi` runtime limits such as `arenaCapBytes` / `maxOutputBytes`
 - prefers `./transpiled/app.mjs` when present (component+ESM build)
 - otherwise falls back to `./app.wasm` (core wasm build)
 
@@ -82,6 +83,7 @@ When mounted with `capabilities` (x07.app.capabilities@0.2.0 shape), the host:
 
 - always allows same-origin HTTP requests (keeps relative `/api/...` working)
 - denies cross-origin `http(s)` fetch unless it matches `capabilities.network.allowlist[]`
+- when running from a device bundle, can normalize `device.capabilities.json` `allow_hosts[]` plus `device.profile.json` `backend.base_url` into the host `allowlist[]` form
 
 When mounted with `policySnapshotSha256`, the host includes it in the captured trace/incident metadata.
 
