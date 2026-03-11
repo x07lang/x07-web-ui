@@ -1,6 +1,6 @@
 # Device Capabilities And Permissions
 
-`std-web-ui@0.2.2` separates two concerns:
+`std-web-ui@0.2.3` separates two concerns:
 
 - **Capabilities** are the build-time allowlist from `device.capabilities.json`.
 - **Permissions** are the runtime OS/browser decision for a request.
@@ -9,6 +9,8 @@ The host checks capabilities first. If a reducer requests an operation that the 
 
 The Forge M0 builder-I/O line uses these capability names:
 
+- `audio.playback`
+- `haptics.present`
 - `clipboard.read_text`
 - `clipboard.write_text`
 - `files.pick`
@@ -34,8 +36,10 @@ Reducers should treat permission requests as asynchronous host work:
 2. Wait for the next reducer dispatch with `state.__x07_device.<family>.result`.
 3. Branch on `result.status` and `result.payload`.
 
-Clipboard, files, and share helpers use these reserved result paths:
+Device helpers use these reserved result paths:
 
+- `state.__x07_device.audio.result`
+- `state.__x07_device.haptics.result`
 - `state.__x07_device.clipboard.result`
 - `state.__x07_device.files.result`
 - `state.__x07_device.share.result`
