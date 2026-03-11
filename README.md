@@ -13,7 +13,7 @@ The [X07 toolchain](https://github.com/x07lang/x07) must be installed before usi
 | Surface | Description |
 |---------|-------------|
 | **WIT contracts** (`wit/`) | `x07:web-ui@0.1.0` and `x07:web-ui@0.2.0` — JSON-bytes boundary with `init`/`step` dispatch/frame envelopes; the current device helpers expand the JSON contracts without a `0.3.0` WIT bump |
-| **Stdlib package** (`packages/std-web-ui/0.2.1/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry, and device helpers) |
+| **Stdlib package** (`packages/std-web-ui/0.2.2/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry, and Forge M0 builder-I/O helpers) |
 | **Browser host** (`host/`) | Canonical host (`index.html`, `app-host.mjs`) — loads wasm, normalizes DOM events, calls `init`/`step`, applies patches, captures transcripts |
 | **Examples** | `web_ui_counter`, `web_ui_form` with deterministic trace fixtures |
 
@@ -26,10 +26,11 @@ The UI reducer is a pure state machine (`init` + `step`). Side effects are expre
 - **Navigation** (`std.web_ui.effects.nav`): navigation effects
 - **Timer** (`std.web_ui.effects.timer`): timer/delay effects
 - **Device permissions** (`std.web_ui.effects.device.permissions`): capability-aware runtime permission query/request helpers
-- **Device capture/import** (`std.web_ui.effects.device.camera`, `std.web_ui.effects.device.files`): camera/photo capture and file import helpers that return blob manifests
+- **Device capture/import/export** (`std.web_ui.effects.device.camera`, `std.web_ui.effects.device.files`): camera/photo capture, multi-file import, and save/export helpers that return normalized file items plus blob manifests
+- **Device clipboard/share** (`std.web_ui.effects.device.clipboard`, `std.web_ui.effects.device.share`): clipboard read/write helpers plus text/file share builders
 - **Device blobs** (`std.web_ui.effects.device.blobs`): blob metadata helpers for host-owned binary storage
 - **Device location** (`std.web_ui.effects.device.location`): one-shot foreground location helpers
-- **Device notifications/events** (`std.web_ui.effects.device.notifications`, `std.web_ui.effects.device.events`): local notification helpers plus lifecycle/connectivity event predicates
+- **Device notifications/events** (`std.web_ui.effects.device.notifications`, `std.web_ui.effects.device.events`): local notification helpers plus lifecycle/connectivity and normalized `files.drop` event predicates
 
 ## Architecture
 
@@ -51,8 +52,8 @@ The same `std.web_ui.*` reducer compiled to WASM runs everywhere:
 
 - Recommended install flow:
   - `x07up component add wasm`
-  - `x07 pkg add std-web-ui@0.2.1 --sync`
-- Package publish line: `std-web-ui@0.2.1`
+  - `x07 pkg add std-web-ui@0.2.2 --sync`
+- Package publish line: `std-web-ui@0.2.2`
 - [X07 Agent Quickstart](https://x07lang.org/docs/getting-started/agent-quickstart) — start here
 - [X07 toolchain](https://github.com/x07lang/x07)
 - [X07 website](https://x07lang.org)

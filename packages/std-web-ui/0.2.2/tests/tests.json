@@ -1,0 +1,197 @@
+{
+  "schema_version": "x07.tests_manifest@0.2.0",
+  "tests": [
+    {
+      "id": "std-web-ui/dispatch_init_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_dispatch_init_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/event_input_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_event_input_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/vdom_text_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_vdom_text_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/vdom_on_input_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_vdom_on_input_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/patch_roundtrip_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_patch_roundtrip_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/frame_builder_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_frame_builder_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/http_effect_get_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_http_effect_get_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/http_dispatch_response_extract_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_http_dispatch_response_extract_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/http_dispatch_response_present_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_http_dispatch_response_present_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/http_effect_post_json_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_http_effect_post_json_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/storage_effect_get_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_storage_effect_get_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/storage_dispatch_extract_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_storage_dispatch_extract_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/storage_dispatch_get_present_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_storage_dispatch_get_present_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/nav_effect_push_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_nav_effect_push_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/nav_dispatch_extract_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_nav_dispatch_extract_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/timer_effect_set_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_timer_effect_set_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/timer_dispatch_extract_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_timer_dispatch_extract_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_permissions_query_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_permissions_query_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_permissions_dispatch_extract_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_permissions_dispatch_extract_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_camera_capture_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_camera_capture_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_clipboard_effects_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_clipboard_effects_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_clipboard_dispatch_extract_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_clipboard_dispatch_extract_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_files_pick_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_files_pick_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_files_save_effects_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_files_save_effects_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_files_dispatch_items_extract_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_files_dispatch_items_extract_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_blobs_dispatch_extract_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_blobs_dispatch_extract_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_location_get_current_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_location_get_current_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_notifications_schedule_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_notifications_schedule_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_events_present_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_events_present_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_events_files_drop_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_events_files_drop_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_share_effects_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_share_effects_v1",
+      "expect": "pass"
+    },
+    {
+      "id": "std-web-ui/device_share_dispatch_extract_v1",
+      "world": "solve-pure",
+      "entry": "std.web_ui.tests.test_device_share_dispatch_extract_v1",
+      "expect": "pass"
+    }
+  ]
+}
