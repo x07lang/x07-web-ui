@@ -1,6 +1,6 @@
 # Device Blob Manifests
 
-M0 keeps binary payloads out of reducer state.
+The current device helper surface keeps binary payloads out of reducer state.
 
 The host stores captured or imported bytes in a host-owned blob store and injects only a manifest into reducer state. The standard shape is:
 

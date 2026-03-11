@@ -1,14 +1,14 @@
-# Phase 2: Web UI MVP
+# Web UI Contracts
 
 This repo is the canonical home for:
 
-- `std.web_ui.*` X07 modules (package: `std-web-ui@0.2.0`)
+- `std.web_ui.*` X07 modules (package: `std-web-ui@0.2.1`)
 - `x07:web-ui` WIT packages
 - the canonical browser host (JS)
 
 ## Contracts
 
-### Core-wasm-first (Phase 2A)
+### Core Wasm Contract
 
 The browser host loads a core wasm module exporting `x07_solve_v2` and drives it with JSON bytes:
 
@@ -17,7 +17,7 @@ The browser host loads a core wasm module exporting `x07_solve_v2` and drives it
 
 The host maintains `state` outside the wasm module and replays deterministically using captured traces.
 
-### Component path (Phase 2B)
+### Component Contract
 
 The delivery artifact is a wasm component exporting:
 
@@ -28,7 +28,7 @@ The browser runs the transpiled ESM output produced by `jco transpile`.
 
 ## Layout
 
-- `packages/std-web-ui/0.2.0/`: canonical `std.web_ui.*` package
+- `packages/std-web-ui/0.2.1/`: canonical `std.web_ui.*` package
 - `wit/`: canonical WIT packages
 - `host/`: canonical browser host (ESM + HTML)
 - `examples/`: small solve-pure apps that emit `x07.web_ui.*` frames
@@ -61,7 +61,7 @@ The browser host entry is `host/index.html`:
 
 For backwards compatibility, `host/main.mjs` exists as a thin alias that loads `bootstrap.js`.
 
-## Phase 3 extension: HTTP effects
+## HTTP Effects
 
 When mounted with an API prefix, the host also:
 
@@ -69,7 +69,7 @@ When mounted with an API prefix, the host also:
 - injects responses under `state.__x07_http.response`
 - captures an `x07.app.trace@0.1.0` with combined UI + HTTP exchanges
 
-## Phase 5 extension: browser effects
+## Browser Effects
 
 The host also supports a minimal browser-side effect surface and injects results under reserved state keys:
 
@@ -77,7 +77,7 @@ The host also supports a minimal browser-side effect surface and injects results
 - Navigation: `x07.web_ui.effect.nav.*` → `state.__x07_nav`
 - Timers: `x07.web_ui.effect.timer.*` → `state.__x07_timer`
 
-## Phase 6 extension: capabilities + policy snapshot
+## Capabilities And Policy Snapshot
 
 When mounted with `capabilities` (x07.app.capabilities@0.2.0 shape), the host:
 

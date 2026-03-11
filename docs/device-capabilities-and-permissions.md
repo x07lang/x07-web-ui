@@ -1,13 +1,13 @@
 # Device Capabilities And Permissions
 
-`std-web-ui@0.2.0` separates two concerns:
+`std-web-ui@0.2.1` separates two concerns:
 
 - **Capabilities** are the build-time allowlist from `device.capabilities.json`.
 - **Permissions** are the runtime OS/browser decision for a request.
 
 The host checks capabilities first. If a reducer requests an operation that the target profile does not allow, the host returns a structured device result with `status: "unsupported"` and does not attempt the runtime operation.
 
-If the capability is allowed, the host then queries or requests the runtime permission state. M0 normalizes permission state to:
+If the capability is allowed, the host then queries or requests the runtime permission state. The current device helper surface normalizes permission state to:
 
 - `granted`
 - `denied`

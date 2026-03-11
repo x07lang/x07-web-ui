@@ -12,8 +12,8 @@ The [X07 toolchain](https://github.com/x07lang/x07) must be installed before usi
 
 | Surface | Description |
 |---------|-------------|
-| **WIT contracts** (`wit/`) | `x07:web-ui@0.1.0` (Phase 0) and `x07:web-ui@0.2.0` (Phase 2) — JSON-bytes boundary with `init`/`step` dispatch/frame envelopes; the M0 device helpers expand the JSON contracts without a `0.3.0` WIT bump |
-| **Stdlib package** (`packages/std-web-ui/0.2.0/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry, M0 device helpers) |
+| **WIT contracts** (`wit/`) | `x07:web-ui@0.1.0` and `x07:web-ui@0.2.0` — JSON-bytes boundary with `init`/`step` dispatch/frame envelopes; the current device helpers expand the JSON contracts without a `0.3.0` WIT bump |
+| **Stdlib package** (`packages/std-web-ui/0.2.1/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry, and device helpers) |
 | **Browser host** (`host/`) | Canonical host (`index.html`, `app-host.mjs`) — loads wasm, normalizes DOM events, calls `init`/`step`, applies patches, captures transcripts |
 | **Examples** | `web_ui_counter`, `web_ui_form` with deterministic trace fixtures |
 
@@ -22,7 +22,7 @@ The [X07 toolchain](https://github.com/x07lang/x07) must be installed before usi
 The UI reducer is a pure state machine (`init` + `step`). Side effects are expressed as data and executed by the host:
 
 - **HTTP** (`std.web_ui.effects.http`): emits `x07.web_ui.effect.http.request` effects; host executes against an API prefix and captures `x07.app.trace@0.1.0`
-- **Storage** (`std.web_ui.effects.storage`): local key-value storage effects
+- **Storage** (`std.web_ui.effects.storage`): local key-value storage effects; storage writes re-dispatch an acknowledgement at `state.__x07_storage.set.ok` without echoing the persisted payload back into reducer state
 - **Navigation** (`std.web_ui.effects.nav`): navigation effects
 - **Timer** (`std.web_ui.effects.timer`): timer/delay effects
 - **Device permissions** (`std.web_ui.effects.device.permissions`): capability-aware runtime permission query/request helpers
@@ -51,8 +51,8 @@ The same `std.web_ui.*` reducer compiled to WASM runs everywhere:
 
 - Recommended install flow:
   - `x07up component add wasm`
-  - `x07 pkg add std-web-ui@0.2.0 --sync`
-- Package publish line: `std-web-ui@0.2.0`
+  - `x07 pkg add std-web-ui@0.2.1 --sync`
+- Package publish line: `std-web-ui@0.2.1`
 - [X07 Agent Quickstart](https://x07lang.org/docs/getting-started/agent-quickstart) — start here
 - [X07 toolchain](https://github.com/x07lang/x07)
 - [X07 website](https://x07lang.org)
