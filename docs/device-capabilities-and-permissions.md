@@ -1,6 +1,6 @@
 # Device Capabilities And Permissions
 
-`std-web-ui@0.2.3` separates two concerns:
+`std-web-ui@0.2.4` separates two concerns:
 
 - **Capabilities** are the build-time allowlist from `device.capabilities.json`.
 - **Permissions** are the runtime OS/browser decision for a request.

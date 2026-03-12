@@ -1,0 +1,47 @@
+{
+  "schema_version": "x07.package@0.1.0",
+  "name": "std-web-ui",
+  "version": "0.2.4",
+  "description": "Canonical std.web_ui.* package with web UI reducer contracts and device-effect helpers.",
+  "docs": "Canonical std.web_ui.* package with web UI reducer contracts and device-effect helpers.\n\nThis package defines the JSON-bytes contract helpers for browser hosts, deterministic replay, and the Tactics M0 device UX surface.\n\nModules:\n- std.web_ui.schema\n- std.web_ui.vdom\n- std.web_ui.patch\n- std.web_ui.runtime\n- std.web_ui.trace\n- std.web_ui.effects.http\n- std.web_ui.effects.storage\n- std.web_ui.effects.nav\n- std.web_ui.effects.timer\n- std.web_ui.effects.device.common\n- std.web_ui.effects.device.permissions\n- std.web_ui.effects.device.camera\n- std.web_ui.effects.device.audio\n- std.web_ui.effects.device.haptics\n- std.web_ui.effects.device.clipboard\n- std.web_ui.effects.device.files\n- std.web_ui.effects.device.blobs\n- std.web_ui.effects.device.location\n- std.web_ui.effects.device.notifications\n- std.web_ui.effects.device.share\n- std.web_ui.effects.device.events\n- std.web_ui.test\n- std.web_ui.tests\n\nUsage:\n- Add dependency: x07 pkg add std-web-ui@0.2.4 --sync\n- Import std.web_ui.* modules.\n\nNotes:\n- Determinism: pure\n- JSON boundary uses dispatch/frame envelopes.\n- Binary device payloads stay in host-owned blob storage; reducers see manifests only.\n- Device result paths are reserved under state.__x07_device.<family>.result.\n",
+  "module_root": "modules",
+  "modules": [
+    "std.web_ui.schema",
+    "std.web_ui.vdom",
+    "std.web_ui.patch",
+    "std.web_ui.runtime",
+    "std.web_ui.trace",
+    "std.web_ui.effects.http",
+    "std.web_ui.effects.storage",
+    "std.web_ui.effects.nav",
+    "std.web_ui.effects.timer",
+    "std.web_ui.effects.device.common",
+    "std.web_ui.effects.device.permissions",
+    "std.web_ui.effects.device.camera",
+    "std.web_ui.effects.device.audio",
+    "std.web_ui.effects.device.haptics",
+    "std.web_ui.effects.device.clipboard",
+    "std.web_ui.effects.device.files",
+    "std.web_ui.effects.device.blobs",
+    "std.web_ui.effects.device.location",
+    "std.web_ui.effects.device.notifications",
+    "std.web_ui.effects.device.share",
+    "std.web_ui.effects.device.events",
+    "std.web_ui.test",
+    "std.web_ui.tests"
+  ],
+  "meta": {
+    "determinism_tier": "pure",
+    "worlds_allowed": [
+      "solve-pure",
+      "solve-fs",
+      "solve-rr",
+      "solve-kv",
+      "solve-full",
+      "run-os",
+      "run-os-sandboxed"
+    ],
+    "import_mode": "handwritten",
+    "visibility": "canonical"
+  }
+}
