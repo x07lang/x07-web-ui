@@ -25,7 +25,7 @@ Rules:
 
 The browser host uses a host-owned blob store implementation and the device host consumes the same reducer-visible manifest contract, so replay fixtures stay stable across targets.
 
-For file import/export flows, `std-web-ui@0.2.5` normalizes reducer-visible file items as:
+For file import/export flows, `std-web-ui@0.2.6` normalizes reducer-visible file items as:
 
 ```json
 {

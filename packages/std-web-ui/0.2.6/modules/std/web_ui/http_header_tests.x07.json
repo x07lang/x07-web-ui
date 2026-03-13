@@ -1,0 +1,138 @@
+{
+  "decls": [
+    {
+      "kind": "export",
+      "names": [
+        "std.web_ui.http_header_tests.test_http_dispatch_response_extract_with_headers_v1",
+        "std.web_ui.http_header_tests.test_http_dispatch_extract_full_response_with_headers_v1"
+      ]
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "dispatch",
+          [
+            "bytes.lit",
+            "{\"v\":1,\"kind\":\"x07.web_ui.dispatch\",\"state\":{\"__x07_http\":{\"response\":{\"schema_version\":\"x07.http.response.envelope@0.1.0\",\"request_id\":\"req1\",\"status\":200,\"headers\":[{\"k\":\"access-control-allow-headers\",\"v\":\"content-type, authorization\"},{\"k\":\"access-control-allow-methods\",\"v\":\"GET, POST, PUT, PATCH, DELETE, OPTIONS\"},{\"k\":\"access-control-allow-origin\",\"v\":\"*\"},{\"k\":\"access-control-max-age\",\"v\":\"600\"}],\"body\":{\"bytes_len\":4,\"text\":\"pong\"}}}},\"event\":{\"type\":\"init\"}}"
+          ]
+        ],
+        [
+          "let",
+          "status",
+          [
+            "std.web_ui.effects.http.dispatch_response_status_canon_or_err_v1",
+            [
+              "bytes.view",
+              "dispatch"
+            ]
+          ]
+        ],
+        [
+          "try",
+          [
+            "std.test.assert_bytes_eq",
+            "status",
+            [
+              "bytes.lit",
+              "200"
+            ],
+            [
+              "std.test.code_assert_bytes_eq"
+            ]
+          ]
+        ],
+        [
+          "let",
+          "text",
+          [
+            "std.web_ui.effects.http.dispatch_response_body_text_canon_or_err_v1",
+            [
+              "bytes.view",
+              "dispatch"
+            ]
+          ]
+        ],
+        [
+          "try",
+          [
+            "std.test.assert_bytes_eq",
+            "text",
+            [
+              "bytes.lit",
+              "\"pong\""
+            ],
+            [
+              "std.test.code_assert_bytes_eq"
+            ]
+          ]
+        ],
+        [
+          "std.test.pass"
+        ]
+      ],
+      "kind": "defn",
+      "name": "std.web_ui.http_header_tests.test_http_dispatch_response_extract_with_headers_v1",
+      "params": [],
+      "result": "result_i32"
+    },
+    {
+      "body": [
+        "begin",
+        [
+          "let",
+          "dispatch",
+          [
+            "bytes.lit",
+            "{\"v\":1,\"kind\":\"x07.web_ui.dispatch\",\"state\":{\"__x07_http\":{\"response\":{\"schema_version\":\"x07.http.response.envelope@0.1.0\",\"request_id\":\"req1\",\"status\":200,\"headers\":[{\"k\":\"access-control-allow-headers\",\"v\":\"content-type, authorization\"},{\"k\":\"access-control-allow-methods\",\"v\":\"GET, POST, PUT, PATCH, DELETE, OPTIONS\"},{\"k\":\"access-control-allow-origin\",\"v\":\"*\"},{\"k\":\"access-control-max-age\",\"v\":\"600\"}],\"body\":{\"bytes_len\":4,\"text\":\"pong\"}}}},\"event\":{\"type\":\"init\"}}"
+          ]
+        ],
+        [
+          "let",
+          "response",
+          [
+            "std.web_ui.runtime.dispatch_extract_canon_or_err_v1",
+            [
+              "bytes.view",
+              "dispatch"
+            ],
+            [
+              "bytes.view_lit",
+              "state.__x07_http.response"
+            ]
+          ]
+        ],
+        [
+          "try",
+          [
+            "std.test.assert_bytes_eq",
+            "response",
+            [
+              "bytes.lit",
+              "{\"body\":{\"bytes_len\":4,\"text\":\"pong\"},\"headers\":[{\"k\":\"access-control-allow-headers\",\"v\":\"content-type, authorization\"},{\"k\":\"access-control-allow-methods\",\"v\":\"GET, POST, PUT, PATCH, DELETE, OPTIONS\"},{\"k\":\"access-control-allow-origin\",\"v\":\"*\"},{\"k\":\"access-control-max-age\",\"v\":\"600\"}],\"request_id\":\"req1\",\"schema_version\":\"x07.http.response.envelope@0.1.0\",\"status\":200}"
+            ],
+            [
+              "std.test.code_assert_bytes_eq"
+            ]
+          ]
+        ],
+        [
+          "std.test.pass"
+        ]
+      ],
+      "kind": "defn",
+      "name": "std.web_ui.http_header_tests.test_http_dispatch_extract_full_response_with_headers_v1",
+      "params": [],
+      "result": "result_i32"
+    }
+  ],
+  "imports": [
+    "std.test",
+    "std.web_ui.effects.http",
+    "std.web_ui.runtime"
+  ],
+  "kind": "module",
+  "module_id": "std.web_ui.http_header_tests",
+  "schema_version": "x07.x07ast@0.5.0"
+}
