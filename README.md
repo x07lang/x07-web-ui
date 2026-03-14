@@ -1,12 +1,44 @@
 # x07-web-ui
 
-Canonical [X07](https://github.com/x07lang/x07) web UI contracts, stdlib packages, and browser host for running x07 UI reducers as pure state machines.
+`x07-web-ui` is the canonical UI layer for [X07](https://github.com/x07lang/x07). It contains the web UI contracts, `std.web_ui.*` packages, browser host, examples, and supporting docs for running x07 UI reducers as pure state machines.
 
-x07-web-ui is designed for **100% agentic coding** — an AI coding agent scaffolds, implements, tests, and ships a web UI app entirely on its own using structured contracts, deterministic replay, and machine-readable outputs. No human needs to write X07 by hand.
+The vision is that UI code should be as reliable for coding agents as backend code: one reducer model, explicit effects, deterministic replay, and the same application logic running across browser and device surfaces.
+
+x07-web-ui is designed for **100% agentic coding**. An AI coding agent can scaffold, implement, test, and ship a web UI app using structured contracts and replay-friendly traces instead of fragile DOM scripting.
+
+## How it fits into the x07 ecosystem
+
+`x07-web-ui` is the UI-specific layer in the wider x07 app stack:
+
+- **`x07`** is the language, package workflow, and main entrypoint.
+- **`x07-web-ui`** defines the reducer model and UI-side standard library.
+- **`x07-wasm-backend`** builds, serves, tests, and packages those reducers as browser and device artifacts.
+- **`x07-device-host`** runs the same reducer inside desktop and mobile WebView shells.
+- **`x07-platform`** can then supervise release, rollout, and incident handling for the packaged application.
+
+If you want to build a user-facing app in x07, this repo is the canonical place where the UI contract lives.
 
 ## Prerequisites
 
 The [X07 toolchain](https://github.com/x07lang/x07) must be installed before using x07-web-ui. If you (or your agent) are new to X07, start with the **[Agent Quickstart](https://x07lang.org/docs/getting-started/agent-quickstart)** — it covers toolchain setup, project structure, and the workflow conventions an agent needs to be productive.
+
+## Practical usage
+
+Use `x07-web-ui` when you want to:
+
+- build a browser UI in x07 with a pure reducer model
+- keep UI behavior deterministic and replayable in CI
+- share the same reducer across browser, desktop, and mobile targets
+- express side effects as explicit data instead of hidden framework callbacks
+
+In standalone use, you pair this repo with `x07-wasm web-ui build/test/serve`.
+
+As part of the full x07 ecosystem, the typical path is:
+
+1. write the reducer against `std.web_ui.*`
+2. build and test it with `x07-wasm`
+3. package it for desktop/mobile with `x07-device-host`
+4. release and supervise it with `x07-platform`
 
 ## What it includes
 
