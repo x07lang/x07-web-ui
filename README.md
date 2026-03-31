@@ -1,5 +1,9 @@
 # x07-web-ui
 
+## Agent Entrypoint
+
+Start here: https://x07lang.org/docs/getting-started/agent-quickstart
+
 `x07-web-ui` is the canonical UI layer for [X07](https://github.com/x07lang/x07). It contains the web UI contracts, `std.web_ui.*` packages, browser host, examples, and supporting docs for running x07 UI reducers as pure state machines.
 
 The vision is that UI code should be as reliable for coding agents as backend code: one reducer model, explicit effects, deterministic replay, and the same application logic running across browser and device surfaces.
