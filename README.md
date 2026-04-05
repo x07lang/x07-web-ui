@@ -49,7 +49,7 @@ As part of the full x07 ecosystem, the typical path is:
 | Surface | Description |
 |---------|-------------|
 | **WIT contracts** (`wit/`) | `x07:web-ui@0.1.0` and `x07:web-ui@0.2.0` — JSON-bytes boundary with `init`/`step` dispatch/frame envelopes; the current device helpers expand the JSON contracts without a `0.3.0` WIT bump |
-| **Stdlib package** (`packages/std-web-ui/0.2.6/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry, builder-I/O helpers, and Tactics M0 audio/haptics device helpers) |
+| **Stdlib package** (`packages/std-web-ui/0.2.6/`) | Canonical `std.web_ui.*` modules (tree, event, patch, effect, telemetry, builder-I/O helpers, and Tactics audio/haptics device helpers) |
 | **Browser host** (`host/`) | Canonical host (`index.html`, `app-host.mjs`) — loads wasm, normalizes DOM events, calls `init`/`step`, applies patches, captures transcripts |
 | **Examples** | `web_ui_counter`, `web_ui_form` with deterministic trace fixtures |
 

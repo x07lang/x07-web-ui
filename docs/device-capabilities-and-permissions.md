@@ -7,7 +7,7 @@
 
 The host checks capabilities first. If a reducer requests an operation that the target profile does not allow, the host returns a structured device result with `status: "unsupported"` and does not attempt the runtime operation.
 
-The Forge M0 builder-I/O line uses these capability names:
+The builder-I/O surface uses these capability names:
 
 - `audio.playback`
 - `haptics.present`
